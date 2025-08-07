@@ -4,7 +4,9 @@ FROM golang:1.21-alpine AS builder
 WORKDIR /app
 
 COPY . .
-RUN go mod tidy && go get github.com/gin-gonic/gin && go build -o backend-app
+RUN go mod tidy 
+RUN go get github.com/gin-gonic/gin 
+RUN go build -o backend-app
 
 # Stage 2: Run
 FROM alpine:latest

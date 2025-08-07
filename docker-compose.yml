@@ -1,22 +1,4 @@
 services:
-  backend:
-    build: 
-      context: ./backend
-    container_name: backend
-    ports:
-      - "8080:8080"
-    networks:
-      - app-network
-
-  frontend:
-    build: 
-      context: ./frontend
-    container_name: frontend
-    ports:
-      - "3000:80"
-    networks:
-      - app-network
-
   db:
     image: postgres:15
     restart: always
@@ -31,6 +13,34 @@ services:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - app-network
+
+  backend:
+    build: 
+      context: ./backend
+    container_name: backend
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB}
+    networks:
+      - app-network
+
+  frontend:
+    build: 
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:80"
+    networks:
+      - app-network
+    depends_on:
+      - backend
 
 networks:
   app-network:
