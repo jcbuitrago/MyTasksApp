@@ -9,5 +9,5 @@ func main() {
 	r.GET("/api/hello", func(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "Hello from Go Backend!"})
 	})
-	r.Run(":8080")
+	r.Run(":8080") // Listen on port 8080
 }

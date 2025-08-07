@@ -1,15 +1,17 @@
-version: '3.9'
-
 services:
   backend:
-    build: ./backend
+    build: 
+      context: ./backend
+    container_name: backend
     ports:
       - "8080:8080"
     networks:
       - app-network
 
   frontend:
-    build: ./frontend
+    build: 
+      context: ./frontend
+    container_name: frontend
     ports:
       - "3000:80"
     networks:

@@ -1,12 +1,18 @@
 # Stage 1: Build
 FROM golang:1.21-alpine AS builder
+
 WORKDIR /app
+
 COPY . .
-RUN go mod init backend && go get github.com/gin-gonic/gin && go build -o main
+RUN go mod tidy && go get github.com/gin-gonic/gin && go build -o backend-app
 
 # Stage 2: Run
 FROM alpine:latest
+
 WORKDIR /root/
-COPY --from=builder /app/main .
+
+COPY --from=builder /app/backend-app .
+
 EXPOSE 8080
-CMD ["./main"]
+
+CMD ["./backend-app"]
