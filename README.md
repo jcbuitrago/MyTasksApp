@@ -8,84 +8,32 @@
 ## Project Structure
 
 <!-- ...existing code or add your project structure here... -->
-|-- backend
-|   |-- Dockerfile
-|   |-- main.go
-|   |-- go.mod
-|-- frontend
-|   |-- Dockerfile
-|   |-- index.html
-|-- db
-|   |-- init.sql
-|--docker-compose.yml
-|--.env
+.
+├── backend/
+│   ├── Dockerfile
+│   └── main.go
+│   └── go.mod
+├── frontend/
+│   └── Dockerfile
+│   └── index.html
+├── db/
+│   └── init.sql
+└── README.md
+└── docker-compose.yml
+└── .env
 
 ## Docker Compose Deployment
 
-1. **Create/Edit `docker-compose.yml`**  
-   Ensure you have a `docker-compose.yml` file in the project root. Example:
+1. **Create/Edit `.env`**  
+   Ensure you have a `.env` file in the project root. Example:
 
-   ```yaml
-   services:
-  db:
-    image: postgres:15
-    restart: always
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - app-network
-
-  backend:
-    build: 
-      context: ./backend
-    container_name: backend
-    depends_on:
-      - db
-    ports:
-      - "8080:8080"
-    environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: ${POSTGRES_USER}
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
-      DB_NAME: ${POSTGRES_DB}
-    networks:
-      - app-network
-
-  frontend:
-    build: 
-      context: ./frontend
-    container_name: frontend
-    ports:
-      - "3000:80"
-    networks:
-      - app-network
-    depends_on:
-      - backend
-
-  networks:
-    app-network:
-
-  volumes:
-    pgdata:
+   ```sh
+   POSTGRES_USER=<user>
+   POSTGRES_PASSWORD=<password>
+   POSTGRES_DB=<db_name>
    ```
 
    Adjust the service names, ports, and environment variables as needed for your project.
-
-   Ensure you have a `.env` file in the project root. Example:
-
-  ```.env
-  POSTGRES_USER=<user>
-  POSTGRES_PASSWORD=<password>
-  POSTGRES_DB=<db_name>
-  ```
 
 2. **Build and Start Services**
 
