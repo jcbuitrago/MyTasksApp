@@ -8,7 +8,7 @@
 ## Project Structure
 
 <!-- ...existing code or add your project structure here... -->
-.
+```bash
 ├── backend/
 │   ├── Dockerfile
 │   └── main.go
@@ -21,7 +21,7 @@
 └── README.md
 └── docker-compose.yml
 └── .env
-
+```
 ## Docker Compose Deployment
 
 1. **Create/Edit `.env`**  
