@@ -8,6 +8,10 @@ func createCategory() {
 
 }
 
+func selectCategoryData() {
+
+}
+
 func updateCategory() {
 
 }

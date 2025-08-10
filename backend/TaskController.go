@@ -8,6 +8,10 @@ func createTask() {
 
 }
 
+func selectTaskData() {
+
+}
+
 func updateTask() {
 
 }

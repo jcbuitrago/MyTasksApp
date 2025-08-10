@@ -8,6 +8,10 @@ func createUser() {
 
 }
 
+func selectUserData() {
+
+}
+
 func updateUser() {
 
 }
