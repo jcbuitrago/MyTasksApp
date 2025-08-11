@@ -12,7 +12,7 @@ func createUser() {
 
 }
 
-func selectUserData() {
+func selectUserData(c *gin.Context) {
 	if db == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "DB connection is nil"})
 		return
