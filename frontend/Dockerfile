@@ -1,11 +1,17 @@
-# Use Nginx to serve static files
 FROM nginx:alpine
 
-# Remove default welcome page
-RUN rm -rf /usr/share/nginx/html/*
+RUN rm -rf /etc/nginx/conf.d/*
 
-# Copy our frontend files
-COPY index.html /usr/share/nginx/html/index.html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+COPY public/ /usr/share/nginx/html/
+
 
 # Expose port 80
 EXPOSE 80
+
+# Execute the entrypoint script
+ENTRYPOINT ["/docker-entrypoint.sh"]
