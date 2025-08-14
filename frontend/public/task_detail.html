@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyTasks - Task Detail</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", "Noto Sans", sans-serif;
+        background-color: #101a23;
+        color: white; /* Color de texto por defecto */
+      }
+      .min-h-screen {
+        min-height: 100vh;
+      }
+      .bg-custom-dark {
+        background-color: #101a23;
+      }
+      .bg-custom-medium {
+        background-color: #223649;
+      }
+      .bg-custom-input {
+        background-color: #182634;
+      }
+      .border-custom-medium {
+        border-color: #223649 !important;
+      }
+      .border-custom-darker {
+        border-color: #314d68 !important;
+      }
+      .text-custom-blue {
+        color: #90adcb;
+      }
+      .text-32px {
+        font-size: 32px;
+      }
+      .tracking-light {
+        letter-spacing: -0.015em;
+      }
+      .rounded-full {
+        border-radius: 50%;
+      }
+      .size-10 {
+        width: 40px;
+        height: 40px;
+      }
+      .size-4 {
+        width: 16px;
+        height: 16px;
+      }
+      .btn-custom {
+        background-color: #223649;
+        border-color: #223649;
+        color: white;
+      }
+      .btn-custom-blue {
+        background-color: #0d80f2;
+        border-color: #0d80f2;
+        color: white;
+      }
+      .min-w-40 {
+        min-width: 10rem !important; /* 160px */
+      }
+      .min-w-72 {
+        min-width: 18rem !important; /* 288px */
+      }
+      .min-h-36 {
+        min-height: 9rem !important; /* 144px */
+      }
+      .h-10 {
+        height: 2.5rem !important;
+      }
+      .h-14 {
+        height: 3.5rem !important;
+      }
+      .px-40 {
+        padding-left: 10rem !important;
+        padding-right: 10rem !important;
+      }
+      .form-control.custom-input {
+        background-color: #182634;
+        border-color: #314d68;
+        color: white;
+      }
+      .form-control.custom-input:focus {
+        border-color: #314d68;
+        box-shadow: none;
+      }
+      .form-select.custom-select {
+        background-color: #182634;
+        border-color: #314d68;
+        color: white;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='24px' height='24px' fill='rgb(144,173,203)' viewBox='0 0 256 256'%3e%3cpath d='M181.66,170.34a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-48-48a8,8,0,0,1,11.32-11.32L128,212.69l42.34-42.35A8,8,0,0,1,181.66,170.34Zm-96-84.68L128,43.31l42.34,42.35a8,8,0,0,0,11.32-11.32l-48-48a8,8,0,0,0-11.32,0l-48,48A8,8,0,0,0,85.66,85.66Z'%3e%3c/path%3e%3c/svg%3e");
+        background-position: right 1rem center;
+        background-size: 20px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="container-fluid min-h-screen p-0 d-flex flex-column bg-custom-dark"
+    >
+      <header
+        class="d-flex align-items-center justify-content-between flex-wrap border-bottom border-custom-medium px-4 px-md-5 py-3"
+      >
+        <div class="d-flex align-items-center gap-3 gap-md-4 text-white">
+          <div class="size-4 d-flex">
+            <svg
+              viewBox="0 0 48 48"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M6 6H42L36 24L42 42H6L12 24L6 6Z"></path>
+            </svg>
+          </div>
+          <h2 class="text-white fs-5 fw-bold m-0">TaskMaster</h2>
+        </div>
+        <div
+          class="d-flex flex-grow-1 justify-content-end align-items-center gap-3 gap-md-5"
+        >
+          <nav class="d-none d-md-flex align-items-center gap-4 gap-md-5">
+            <a class="text-white small fw-medium text-decoration-none" href="#"
+              >Dashboard</a
+            >
+            <a class="text-white small fw-medium text-decoration-none" href="#"
+              >Tasks</a
+            >
+            <a class="text-white small fw-medium text-decoration-none" href="#"
+              >Projects</a
+            >
+          </nav>
+          <button
+            class="btn btn-custom h-10 d-flex align-items-center gap-2 rounded-3 fw-bold"
+          >
+            <div class="text-white d-flex" data-icon="Bell">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20px"
+                height="20px"
+                fill="currentColor"
+                viewBox="0 0 256 256"
+              >
+                <path
+                  d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"
+                ></path>
+              </svg>
+            </div>
+          </button>
+          <div
+            class="bg-secondary rounded-full size-10"
+            style="
+              background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAeEI16ZUQJ92AVXMtPG3axXrUc5SgNagJFwzHFiOsOKF7e3fxOvQvBC0pG8I0bCEfxtP1QXsX7BHwVUFUjJcWH4hYrNmKUJLqql_PpRo4qrDhj9B4MbG24pnciKWH3zzsOdvAZj-X8G13v_fXpOma_Itl72gj-rOizTCfTJc0OyMPO3elnDGNgynLA4Q85-b0pAg2AJV_lPljZa71xud-NsbgeRDqo7ZVeTcjhOkXVbPzcgsJaHKrezgZ2U-MjU1cb-o6h_6_PW48c');
+              background-size: cover;
+              background-position: center;
+            "
+          ></div>
+        </div>
+      </header>
+
+      <div class="d-flex flex-grow-1 justify-content-center py-5 px-3 px-md-5">
+        <div class="d-flex flex-column w-100" style="max-width: 960px">
+          <div
+            class="d-flex flex-wrap justify-content-between align-items-center gap-3 p-4"
+          >
+            <div class="d-flex flex-column gap-2 min-w-72">
+              <p class="text-white text-32px fw-bold m-0 tracking-light">
+                Task Details
+              </p>
+              <p class="text-custom-blue small m-0">
+                View and manage the details of your task.
+              </p>
+            </div>
+          </div>
+          <div class="d-flex flex-column" style="max-width: 480px">
+            <div class="d-flex flex-wrap align-items-end gap-4 p-4">
+              <label class="d-flex flex-column w-100">
+                <p class="text-white fw-medium pb-2 m-0">Title</p>
+                <input
+                  type="text"
+                  class="form-control custom-input h-14"
+                  value=""
+                />
+              </label>
+            </div>
+            <div class="d-flex flex-wrap align-items-end gap-4 p-4">
+              <label class="d-flex flex-column w-100">
+                <p class="text-white fw-medium pb-2 m-0">Description</p>
+                <textarea
+                  class="form-control custom-input min-h-36"
+                ></textarea>
+              </label>
+            </div>
+            <div class="d-flex flex-wrap align-items-end gap-4 p-4">
+              <label class="d-flex flex-column w-100">
+                <p class="text-white fw-medium pb-2 m-0">Status</p>
+                <select class="form-select custom-select h-14">
+                  <option selected>Open this select menu</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </label>
+            </div>
+            <div class="d-flex flex-wrap align-items-end gap-4 p-4">
+              <label class="d-flex flex-column w-100">
+                <p class="text-white fw-medium pb-2 m-0">Due Date</p>
+                <input
+                  type="text"
+                  class="form-control custom-input h-14"
+                  value=""
+                />
+              </label>
+            </div>
+            <div class="d-flex flex-wrap align-items-end gap-4 p-4">
+              <label class="d-flex flex-column w-100">
+                <p class="text-white fw-medium pb-2 m-0">Creation Date</p>
+                <input
+                  type="text"
+                  class="form-control custom-input h-14"
+                  value=""
+                />
+              </label>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end p-4">
+            <div class="d-flex gap-3">
+              <button
+                class="btn btn-custom h-10 px-4 rounded-3 fw-bold text-truncate"
+              >
+                Edit Task
+              </button>
+              <button
+                class="btn btn-custom-blue h-10 px-4 rounded-3 fw-bold text-truncate"
+              >
+                Delete Task
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

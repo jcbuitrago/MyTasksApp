@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyTasks - My Tasks App</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", "Noto Sans", sans-serif;
+        background-color: #101a23;
+      }
+
+      .text-custom-white {
+        color: #fff;
+      }
+
+      .text-custom-blue {
+        color: #90adcb;
+      }
+
+      .bg-custom-dark-blue {
+        background-color: #101a23;
+      }
+
+      .bg-custom-medium-blue {
+        background-color: #223649;
+      }
+
+      .bg-custom-primary {
+        background-color: #0d80f2;
+      }
+
+      .border-custom-dark {
+        border-color: #314d68 !important;
+      }
+
+      .rounded-full {
+        border-radius: 50% !important;
+      }
+
+      .size-10 {
+        width: 40px;
+        height: 40px;
+      }
+
+      .size-12 {
+        width: 48px;
+        height: 48px;
+      }
+
+      .w-80 {
+        width: 20rem !important; /* 320px */
+      }
+
+      .min-h-screen {
+        min-height: 100vh;
+      }
+
+      .min-h-700 {
+        min-height: 700px;
+      }
+
+      .flex-1 {
+        flex: 1 1 0%;
+      }
+      .flex-wrap {
+        flex-wrap: wrap;
+      }
+
+      .text-32px {
+        font-size: 32px;
+      }
+
+      .tracking-light {
+        letter-spacing: -0.05em;
+      }
+
+      .btn-primary-custom {
+        background-color: #0d80f2;
+        border-color: #0d80f2;
+      }
+
+      .btn-primary-custom:hover {
+        background-color: #0c6ac4;
+        border-color: #0c6ac4;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="container-fluid min-h-screen p-0 d-flex flex-column bg-custom-dark-blue"
+    >
+      <div class="d-flex flex-column flex-grow-1">
+        <div class="d-flex flex-column flex-md-row flex-grow-1 p-5 gap-3">
+          <div
+            class="d-flex flex-column w-80 bg-custom-dark-blue p-4 min-h-700 justify-content-between"
+          >
+            <div class="d-flex flex-column gap-4">
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="rounded-circle size-10 bg-secondary"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA_CT_yD-4gA5yMLkP2AC8a_JrA1UPmHOw-Z60d8ZR9Bp0o9jtjqvYBO3H7T9EkIqvkqYcvLQiWJqVO0SJ4ZrghTdbCNwOw227rZUknM_XIq3ysB5ZjGvvSOaInekpT1FtvEtDOrN03RX8INiKQnh99w0PkrPB-eKD6X2kvhpZjM-NpmLMDH-U0gemoqyy7j6Ccq2Mff3gcuy2hoQZ9AnLb9OZf08slG5rs9z-CQspHT5hsKMFLc4A6cJzr-48zs8thvcpnYUMjt7Tg');
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="d-flex flex-column">
+                  <h1 class="text-white fs-6 fw-medium m-0">User</h1>
+                  <p class="text-custom-blue small m-0">My Lists</p>
+                </div>
+              </div>
+              <div class="d-flex flex-column gap-2">
+                <div
+                  class="d-flex align-items-center gap-3 px-3 py-2 rounded bg-custom-medium-blue"
+                >
+                  <div class="text-white" data-icon="Tray">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24px"
+                      height="24px"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32Zm0,176H48V168H76.69L96,187.32A15.89,15.89,0,0,0,107.31,192h41.38A15.86,15.86,0,0,0,160,187.31L179.31,168H208v40Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <p class="text-white small fw-medium m-0">Inbox</p>
+                </div>
+                <div class="d-flex align-items-center gap-3 px-3 py-2">
+                  <div class="text-white" data-icon="Sun">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24px"
+                      height="24px"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <p class="text-white small fw-medium m-0">Today</p>
+                </div>
+                <div class="d-flex align-items-center gap-3 px-3 py-2">
+                  <div class="text-white" data-icon="Calendar">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24px"
+                      height="24px"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-96-88v64a8,8,0,0,1-16,0V132.94l-4.42,2.22a8,8,0,0,1-7.16-14.32l16-8A8,8,0,0,1,112,120Zm59.16,30.45L152,176h16a8,8,0,0,1,0,16H136a8,8,0,0,1-6.4-12.8l28.78-38.37A8,8,0,1,0,145.07,132a8,8,0,1,1-13.85-8A24,24,0,0,1,176,136,23.76,23.76,0,0,1,171.16,150.45Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <p class="text-white small fw-medium m-0">Upcoming</p>
+                </div>
+                <div class="d-flex align-items-center gap-3 px-3 py-2">
+                  <div class="text-white" data-icon="CheckSquare">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24px"
+                      height="24px"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM224,48V208a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V48A16,16,0,0,1,48,32H208A16,16,0,0,1,224,48ZM208,208V48H48V208H208Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <p class="text-white small fw-medium m-0">Completed</p>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-column gap-4">
+              <button
+                class="btn btn-primary-custom d-flex justify-content-center align-items-center rounded-lg py-2"
+              >
+                <span class="text-truncate">New List</span>
+              </button>
+              <div class="d-flex flex-column gap-1">
+                <div class="d-flex align-items-center gap-3 px-3 py-2">
+                  <div class="text-white" data-icon="Gear">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24px"
+                      height="24px"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Zm-16.1-6.5a73.93,73.93,0,0,1,0,8.68,8,8,0,0,0,1.74,5.48l14.19,17.73a91.57,91.57,0,0,1-6.23,15L187,173.11a8,8,0,0,0-5.1,2.64,74.11,74.11,0,0,1-6.14,6.14,8,8,0,0,0-2.64,5.1l-2.51,22.58a91.32,91.32,0,0,1-15,6.23l-17.74-14.19a8,8,0,0,0-5-1.75h-.48a73.93,73.93,0,0,1-8.68,0,8,8,0,0,0-5.48,1.74L100.45,215.8a91.57,91.57,0,0,1-15-6.23L82.89,187a8,8,0,0,0-2.64-5.1,74.11,74.11,0,0,1-6.14-6.14,8,8,0,0,0-5.1-2.64L46.43,170.6a91.32,91.32,0,0,1-6.23-15l14.19-17.74a8,8,0,0,0,1.74-5.48,73.93,73.93,0,0,1,0-8.68,8,8,0,0,0-1.74-5.48L40.2,100.45a91.57,91.57,0,0,1,6.23-15L69,82.89a8,8,0,0,0,5.1-2.64,74.11,74.11,0,0,1,6.14-6.14A8,8,0,0,0,82.89,69L85.4,46.43a91.32,91.32,0,0,1,15-6.23l17.74,14.19a8,8,0,0,0,5.48,1.74,73.93,73.93,0,0,1,8.68,0,8,8,0,0,0,5.48-1.74L155.55,40.2a91.57,91.57,0,0,1,15,6.23L173.11,69a8,8,0,0,0,2.64,5.1,74.11,74.11,0,0,1,6.14,6.14,8,8,0,0,0,5.1,2.64l22.58,2.51a91.32,91.32,0,0,1,6.23,15l-14.19,17.74A8,8,0,0,0,199.87,123.66Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <p class="text-white small fw-medium m-0">Settings</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-column flex-grow-1">
+            <div
+              class="d-flex flex-wrap justify-content-between align-items-center gap-3 p-4"
+            >
+              <p class="text-white text-32px fw-bold m-0 tracking-light">
+                Inbox
+              </p>
+              <button
+                class="btn bg-custom-medium-blue text-white fw-medium py-2 px-4 rounded"
+              >
+                <span class="text-truncate">Add Task</span>
+              </button>
+            </div>
+            <div class="pb-3">
+              <ul class="nav nav-tabs border-custom-dark px-4 gap-4">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active border-bottom border-primary border-3"
+                    aria-current="page"
+                    href="#"
+                    >Not Started</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-custom-blue" href="#">In Progress</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-custom-blue" href="#">Completed</a>
+                </li>
+              </ul>
+            </div>
+            <div class="list-group list-group-flush">
+              <div
+                class="list-group-item d-flex align-items-center gap-4 bg-custom-dark-blue px-4 py-3 border-bottom border-custom-dark"
+              >
+                <div
+                  class="text-white d-flex align-items-center justify-content-center rounded-lg bg-custom-medium-blue size-12"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24px"
+                    height="24px"
+                    fill="currentColor"
+                    viewBox="0 0 256 256"
+                  >
+                    <path
+                      d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="d-flex flex-column justify-content-center">
+                  <p class="text-white fw-medium m-0">Grocery Shopping</p>
+                  <p class="text-custom-blue small m-0">Due: Tomorrow</p>
+                </div>
+              </div>
+              <div
+                class="list-group-item d-flex align-items-center gap-4 bg-custom-dark-blue px-4 py-3 border-bottom border-custom-dark"
+              >
+                <div
+                  class="text-white d-flex align-items-center justify-content-center rounded-lg bg-custom-medium-blue size-12"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24px"
+                    height="24px"
+                    fill="currentColor"
+                    viewBox="0 0 256 256"
+                  >
+                    <path
+                      d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="d-flex flex-column justify-content-center">
+                  <p class="text-white fw-medium m-0">Book Appointment</p>
+                  <p class="text-custom-blue small m-0">Due: Next Week</p>
+                </div>
+              </div>
+              <div
+                class="list-group-item d-flex align-items-center gap-4 bg-custom-dark-blue px-4 py-3 border-bottom border-custom-dark"
+              >
+                <div
+                  class="text-white d-flex align-items-center justify-content-center rounded-lg bg-custom-medium-blue size-12"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24px"
+                    height="24px"
+                    fill="currentColor"
+                    viewBox="0 0 256 256"
+                  >
+                    <path
+                      d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="d-flex flex-column justify-content-center">
+                  <p class="text-white fw-medium m-0">Plan Vacation</p>
+                  <p class="text-custom-blue small m-0">Due: In 2 Weeks</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
