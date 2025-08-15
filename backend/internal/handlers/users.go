@@ -9,7 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
-	"mytasks/internal/auth"
+	"mytasks/internal/middleware"
 )
 
 type UsersHandler struct {
@@ -101,7 +101,7 @@ func (h *UsersHandler) Login(c *gin.Context) {
 		return
 	}
 
-	tok, err := auth.GenerateToken(id)
+	tok, err := middleware.GenerateToken(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "no se pudo generar token"})
 		return
