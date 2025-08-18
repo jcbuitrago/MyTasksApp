@@ -20,7 +20,9 @@ services:
       retries: 5
 
   backend:
-    build: ./backend
+    build:
+      context: .            # <- raíz
+      dockerfile: Dockerfile
     container_name: backend
     environment:
       DB_HOST: db
