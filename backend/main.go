@@ -59,6 +59,19 @@ func main() {
 	auth.GET("/categorias", catHandler.List)
 	auth.DELETE("/categorias/:id", catHandler.Delete)
 
+	// Dentro de main(), después de abrir la DB y crear el router:
+	th := &handlers.TasksHandler{DB: database}
+
+	auth := r.Group("/")
+	auth.Use(middleware.AuthRequired())
+
+	// Tareas
+	auth.POST("/tareas", th.Create)
+	auth.PUT("/tareas/:id", th.Update)
+	auth.DELETE("/tareas/:id", th.Delete)
+	auth.GET("/tareas/usuario", th.ListByUser) // ?categoria_id=&estado=
+	auth.GET("/tareas/:id", th.GetByID)
+
 	if err := r.Run(":8080"); err != nil {
 		log.Fatal(err)
 	}
