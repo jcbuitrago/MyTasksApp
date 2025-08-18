@@ -7,11 +7,9 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-
 	"mytasks/internal/db"
 	"mytasks/internal/handlers"
 	"mytasks/internal/middleware"
-	"mytasks/internal/repository"
 )
 
 func main() {
@@ -27,19 +25,11 @@ func main() {
 		log.Fatalf("DB ping error: %v", err)
 	}
 
-	// ----- Inyección de dependencias -----
-	// Users (como ya lo tenías)
-	uh := &handlers.UsersHandler{DB: database}
-
-	// Categories (si tu compañero usa repo, cambia por NewCategoryRepository/NewCategoriesHandler)
-	ch := &handlers.CategoriesHandler{DB: database}
-
-	// Tasks (usa el repo que te pasé)
-	taskRepo := repository.NewTaskRepository(database)
-	th := handlers.NewTaskHandler(taskRepo)
-
-	// ----- Router -----
 	r := gin.Default()
+
+
+
+	// CORS abierto para desarrollo
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:  []string{"*"},
 		AllowMethods:  []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -48,30 +38,26 @@ func main() {
 		MaxAge:        12 * time.Hour,
 	}))
 
-	api := r.Group("/")
+	uh := &handlers.UsersHandler{DB: database}
 
-	// Usuarios (público)
-	api.POST("/usuarios", uh.Register)
-	api.POST("/usuarios/iniciar-sesion", uh.Login)
+	// Endpoints Rol A
+	r.POST("/usuarios", uh.Register)             // Crear usuario
+	r.POST("/usuarios/iniciar-sesion", uh.Login) // Login -> token
 
-	// Healthcheck
-	api.GET("/healthz", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"ok": true}) })
+	
+	// Healthcheck opcional
+	r.GET("/healthz", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"ok": true}) })
 
-	// Rutas autenticadas
-	auth := api.Group("/")
-	auth.Use(middleware.AuthRequired()) // tu middleware existente
+	// Dentro de main(), cuando ya tengas `database := db.Open()` y `r := gin.Default()`:
+	catHandler := &handlers.CategoriesHandler{DB: database}
 
-	// Categorías
-	auth.POST("/categorias", ch.Create)
-	auth.GET("/categorias", ch.List)
-	auth.DELETE("/categorias/:id", ch.Delete)
+	auth := r.Group("/")
+	auth.Use(middleware.AuthRequired()) // requiere Bearer {{token}}
 
-	// Tareas
-	auth.POST("/tareas", th.Create)
-	auth.PUT("/tareas/:id", th.Update)
-	auth.DELETE("/tareas/:id", th.Delete)
-	auth.GET("/tareas/usuario", th.ListByUser) // ?categoria_id=&estado=&q=&page=&page_size=
-	auth.GET("/tareas/:id", th.GetByID)
+	// Categorías (protegido)
+	auth.POST("/categorias", catHandler.Create)
+	auth.GET("/categorias", catHandler.List)
+	auth.DELETE("/categorias/:id", catHandler.Delete)
 
 	if err := r.Run(":8080"); err != nil {
 		log.Fatal(err)

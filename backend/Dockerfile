@@ -1,21 +1,31 @@
-# Etapa builder
-FROM golang:1.22 AS builder
+# Stage 1: Build
+FROM golang:1.21-alpine AS builder
+
 WORKDIR /app
 
-# Copiamos solo go.mod y go.sum primero para cachear dependencias
-COPY backend/go.mod backend/go.sum ./
+# Copy go mod file first
+COPY go.mod ./
+
+# Initialize go.sum and download dependencies
+RUN go mod tidy
 RUN go mod download
 
-# Copiamos el resto del código
-COPY backend/. .
+# Copy the rest of the source code
+COPY . .
 
-# Compilamos
-RUN CGO_ENABLED=0 GOOS=linux go build -o backend-app .
+# Ensure all dependencies are available
+RUN go mod tidy
 
-# Etapa runtime mínima
-FROM gcr.io/distroless/base-debian12
-WORKDIR /app
-COPY --from=builder /app/backend-app /app/backend-app
+# Build the application
+RUN go build -o backend-app
+
+# Stage 2: Run
+FROM alpine:latest
+
+WORKDIR /root/
+
+COPY --from=builder /app/backend-app .
+
 EXPOSE 8080
-USER nonroot:nonroot
-ENTRYPOINT ["/app/backend-app"]
+
+CMD ["./backend-app"]
