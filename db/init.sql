@@ -39,3 +39,14 @@ CREATE TABLE IF NOT EXISTS tasks (
 INSERT INTO categories (name, description) VALUES
 ('Hogar','Tareas de casa'),('Trabajo','Tareas de la oficina')
 ON CONFLICT DO NOTHING;
+
+-- Constraint del estado (si ya existe, ignora el error)
+DO $$ BEGIN
+  ALTER TABLE tasks ADD CONSTRAINT chk_tasks_status
+    CHECK (status IN ('Sin Empezar','Empezada','Finalizada'));
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
+-- Índices útiles
+CREATE INDEX IF NOT EXISTS idx_tasks_user     ON tasks(user_id);
+CREATE INDEX IF NOT EXISTS idx_tasks_category ON tasks(category_id);
+CREATE INDEX IF NOT EXISTS idx_tasks_status   ON tasks(status);
