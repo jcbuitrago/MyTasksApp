@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"mytasks/internal/db"
 	"mytasks/internal/handlers"
+	"mytasks/internal/middleware"
 )
 
 func main() {
@@ -26,6 +27,8 @@ func main() {
 
 	r := gin.Default()
 
+
+
 	// CORS abierto para desarrollo
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:  []string{"*"},
@@ -41,8 +44,20 @@ func main() {
 	r.POST("/usuarios", uh.Register)             // Crear usuario
 	r.POST("/usuarios/iniciar-sesion", uh.Login) // Login -> token
 
+	
 	// Healthcheck opcional
 	r.GET("/healthz", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"ok": true}) })
+
+	// Dentro de main(), cuando ya tengas `database := db.Open()` y `r := gin.Default()`:
+	catHandler := &handlers.CategoriesHandler{DB: database}
+
+	auth := r.Group("/")
+	auth.Use(middleware.AuthRequired()) // requiere Bearer {{token}}
+
+	// Categorías (protegido)
+	auth.POST("/categorias", catHandler.Create)
+	auth.GET("/categorias", catHandler.List)
+	auth.DELETE("/categorias/:id", catHandler.Delete)
 
 	if err := r.Run(":8080"); err != nil {
 		log.Fatal(err)

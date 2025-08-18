@@ -21,6 +21,7 @@ services:
 
   backend:
     build: ./backend
+    image: mytasks-backend:latest
     container_name: backend
     environment:
       DB_HOST: db
@@ -43,6 +44,7 @@ services:
   frontend:
     build: 
       context: ./frontend
+    image: mytasks-frontend:latest
     container_name: frontend
     ports:
       - "3000:80"
