@@ -1,96 +1,114 @@
-# MyTasksApp Deployment Guide
+# Proyecto de Nivelación - Gestor de Tareas (MISO)
 
-## Prerequisites
+Este repositorio contiene el desarrollo del **Proyecto No. 0 - Ejercicio de Nivelación** para el curso **"Desarrollo de Software en la Nube"** de la Maestría en Ingeniería de Software (MISO) de la Universidad de los Andes.
 
-- [Docker](https://docs.docker.com/get-docker/) installed
-- [Docker Compose](https://docs.docker.com/compose/install/) installed
+El objetivo es construir una aplicación web completa para la gestión de tareas, implementando una API REST en Go, una base de datos PostgreSQL y una interfaz de usuario web, todo orquestado a través de contenedores Docker.
 
-## Project Structure
+## 🚀 Stack Tecnológico
 
-<!-- ...existing code or add your project structure here... -->
+  * **Backend**: Go (Golang)
+  * **Base de Datos**: PostgreSQL 15
+  * **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
+  * **Servidor Web**: Nginx
+  * **Orquestación**: Docker & Docker Compose
+
+## ✨ Funcionalidades Principales
+
+La aplicación cumple con los siguientes requisitos funcionales:
+
+### 1\. Gestión de Usuarios y Autenticación
+
+  * Creación de cuentas de usuario con credenciales.
+  * Inicio y cierre de sesión mediante tokens de autenticación (JWT).
+  * Asignación de un avatar por defecto.
+
+### 2\. Gestión de Categorías
+
+  * Crear, visualizar, actualizar y eliminar categorías para organizar las tareas (ej. "Trabajo", "Hogar").
+
+### 3\. Gestión de Tareas
+
+  * Crear tareas asociadas a una categoría.
+  * Visualizar la lista de tareas con filtros por categoría y/o estado.
+  * Actualizar el estado de una tarea ("Sin Empezar", "Empezada", "Finalizada").
+  * Modificar la descripción y la fecha tentativa de finalización.
+  * Eliminar tareas.
+  * Registro automático de la fecha de creación de cada tarea.
+
+## 📋 Requisitos Previos
+
+  * [**Docker**](https://docs.docker.com/engine/install/)
+  * [**Docker Compose**](https://docs.docker.com/compose/install/)
+
+## ⚙️ Guía de Inicio Rápido
+
+### 1\. Clonar el Repositorio
+
 ```bash
-├── backend/
-│   ├── Dockerfile
-│   └── main.go
-│   └── go.mod
-├── frontend/
-│   └── Dockerfile
-│   └── index.html
-├── db/
-│   └── init.sql
-└── README.md
-└── docker-compose.yml
-└── .env
+git clone <URL-del-repositorio>
+cd MyTasksApp
 ```
-## Docker Compose Deployment
 
-1. **Create/Edit `.env`**  
-   Ensure you have a `.env` file in the project root. Example:
+### 2\. Configurar Variables de Entorno
 
-   ```sh
-   POSTGRES_USER=<user>
-   POSTGRES_PASSWORD=<password>
-   POSTGRES_DB=<db_name>
-   ```
+Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
 
-   Adjust the service names, ports, and environment variables as needed for your project.
+```env
+# Credenciales para la Base de Datos
+POSTGRES_USER=myuser
+POSTGRES_PASSWORD=mypassword
+POSTGRES_DB=mytasks_db
 
-2. **Build and Start Services**
-
-   ```sh
-   docker-compose up --build
-   ```
-
-   This will build and start all services defined in `docker-compose.yml`.
-
-3. **Stopping Services**
-
-   ```sh
-   docker-compose down (--rmi all #if you want to delete all images)
-   ```
-
-## Testing Each Service
-
-- **App Service**  
-  Access the app backend at [http://localhost:8080/api/hello] (or the port you mapped).
-
-  To run backend individually:
-  
-  cd backend
-  docker build -t backend-app .
-  docker run -d -p 8080:8080 --name backend backend-app
-
-  To stop:
-
-  docker stop backend && docker rm backend
-
-
-
-- **Frontend Service**  
-  To connect to the Frontend for testing access [http://localhost:3000]:
-  
-  cd frontend
-  docker build -t frontend-app .
-  docker run -d -p 3000:80 --name frontend frontend-app
-
-  To stop:
-
-  docker stop frontend && docker rm frontend
-
-
-
-## Environment Variables
-
-- Set environment variables in the `docker-compose.yml` file under each service.
-- For sensitive data, consider using a `.env` file and reference it in `docker-compose.yml` with `env_file: .env`.
-
-## Logs
-
-To view logs for all services:
-```sh
-docker-compose logs
+# Secreto para la autenticación del Backend (JWT)
+JWT_SECRET=un_secreto_muy_largo_y_seguro_aqui
 ```
-Or for a specific service:
-```sh
-docker-compose logs app
+
+### 3\. Construir y Ejecutar la Aplicación
+
+Ejecuta el siguiente comando en la raíz del proyecto para construir las imágenes y levantar los servicios:
+
+```bash
+docker-compose up --build
 ```
+
+Para ejecutar en segundo plano, utiliza la bandera `-d`.
+
+## 🌐 Acceso a la Aplicación
+
+  * **🖥️ Frontend (Aplicación Web)**:
+      * [**http://localhost:3000**](https://www.google.com/search?q=http://localhost:3000)
+  * **⚙️ Backend (API)**:
+      * [**http://localhost:8080**](https://www.google.com/search?q=http://localhost:8080)
+  * **🗃️ Base de Datos (PostgreSQL)**:
+      * **Host**: `localhost`
+      * **Puerto**: `5433`
+      * **Credenciales**: Las definidas en el archivo `.env`.
+
+## 🛑 Detener la Aplicación
+
+```bash
+docker-compose down
+```
+
+## 📄 Endpoints de la API REST
+
+La documentación completa de la API se encuentra en la colección de Postman del proyecto. A continuación, se resumen los endpoints principales:
+
+#### Usuarios
+
+  * `POST /usuarios`: Crear un nuevo usuario.
+  * `POST /usuarios/iniciar-sesion`: Iniciar sesión y obtener un token.
+
+#### Categorías
+
+  * `GET /categorias`: Obtener todas las categorías.
+  * `POST /categorias`: Crear una nueva categoría.
+  * `DELETE /categorias/{id}`: Eliminar una categoría.
+
+#### Tareas
+
+  * `GET /tareas/usuario`: Obtener todas las tareas del usuario autenticado.
+  * `GET /tareas/{id}`: Obtener una tarea específica por su ID.
+  * `POST /tareas`: Crear una nueva tarea.
+  * `PUT /tareas/{id}`: Actualizar una tarea existente.
+  * `DELETE /tareas/{id}`: Eliminar una tarea.
