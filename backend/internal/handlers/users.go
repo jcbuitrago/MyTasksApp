@@ -3,13 +3,13 @@ package handlers
 import (
 	"context"
 	"database/sql"
+	"mytasks/internal/middleware"
 	"net/http"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
-	"mytasks/internal/middleware"
 )
 
 type UsersHandler struct {
@@ -107,5 +107,5 @@ func (h *UsersHandler) Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": tok})
+	c.JSON(http.StatusOK, gin.H{"token": tok, "user_name": req.Username})
 }
