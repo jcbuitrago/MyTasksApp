@@ -22,100 +22,44 @@
       .bg-custom-dark { background-color: #101a23; }
       .bg-custom-medium { background-color: #223649; }
       .text-32px { font-size: 32px; }
-      .tracking-light { letter-spacing: -0.015em; }
-      .size-7 { width: 28px; height: 28px; }
-      .h-8 { height: 2rem !important; }
       .w-80 { width: 20rem !important; }
-      .min-w-72 { min-width: 18rem !important; }
-      .min-h-14 { min-height: 3.5rem !important; }
-      .list-group-item.active { background-color: #223649; border-color: #223649; }
+      .list-group-item.active { background-color: #223649; border-color: #314d68; }
+      .list-group-item { cursor: pointer; }
       p { color: white; }
     </style>
   </head>
   <body>
     <div class="container-fluid min-h-screen p-0 d-flex flex-column bg-custom-dark">
-      <div class="d-flex flex-grow-1 justify-content-center p-3 p-md-5">
-        <div class="d-flex w-100">
-          <div class="d-flex flex-column w-80 p-4 bg-custom-dark text-white justify-content-between" style="min-height: 700px">
-            <div class="d-flex flex-column gap-4">
-              <a href="index.html" class="text-white text-decoration-none">
-                <h1 class="fs-6 fw-medium">MyTasks</h1>
-              </a>
-            </div>
+      <div class="d-flex flex-grow-1">
+        <div class="d-flex flex-column w-80 p-4 bg-custom-dark text-white border-end border-secondary-subtle">
+          <a href="index.html" class="text-white text-decoration-none mb-4">
+            <h1 class="fs-5 fw-bold">MyTasks</h1>
+          </a>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="fs-6 text-secondary text-uppercase">Categorías</h2>
+            <button id="addCategoryButton" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">+</button>
           </div>
+          <ul id="categoryListContainer" class="list-group list-group-flush">
+            <li class="list-group-item d-flex align-items-center justify-content-between p-3 bg-transparent border-0 text-white" data-category-id="unassigned">
+              <span class="m-0 text-truncate fst-italic">Sin Categoría</span>
+            </li>
+          </ul>
+        </div>
 
-          <div class="d-flex flex-column flex-grow-1 p-3">
-            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 p-4">
-              <p class="text-white text-32px fw-bold m-0 tracking-light min-w-72">Categories</p>
-              <button id="addCategoryButton" class="btn btn-primary bg-custom-medium h-8 px-4 rounded-3 text-white fw-medium text-truncate" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                Add Category
-              </button>
-            </div>
-            <ul id="categoryListContainer" class="list-group list-group-flush">
-              </ul>
+        <div class="d-flex flex-column flex-grow-1 p-4">
+          <h2 id="task-list-title" class="text-white text-32px fw-bold mb-4">Tareas</h2>
+          <div id="taskListContainer" class="list-group list-group-flush">
+            <p class="text-center text-secondary p-5">Selecciona una categoría de la izquierda para ver sus tareas.</p>
           </div>
         </div>
       </div>
     </div>
 
     <div class="modal fade" id="addCategoryModal" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-custom-medium border-secondary">
-          <form id="addCategoryForm">
-            <div class="modal-header">
-              <h5 class="modal-title">Añadir Nueva Categoría</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label for="categoryName" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="categoryName" required>
-              </div>
-              <div class="mb-3">
-                <label for="categoryDescription" class="form-label">Descripción</label>
-                <textarea class="form-control" id="categoryDescription" rows="3"></textarea>
-              </div>
-              <div id="addCategoryError" class="alert alert-danger d-none"></div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary">Guardar</button>
-            </div>
-          </form>
-        </div>
-      </div>
+      <div class="modal-dialog modal-dialog-centered"><div class="modal-content bg-custom-medium border-secondary"><form id="addCategoryForm"><div class="modal-header"><h5 class="modal-title">Añadir Nueva Categoría</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="mb-3"><label for="categoryName" class="form-label">Nombre</label><input type="text" class="form-control" id="categoryName" required></div><div class="mb-3"><label for="categoryDescription" class="form-label">Descripción</label><textarea class="form-control" id="categoryDescription" rows="3"></textarea></div><div id="addCategoryError" class="alert alert-danger d-none"></div></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button><button type="submit" class="btn btn-primary">Guardar</button></div></form></div></div>
     </div>
-
     <div class="modal fade" id="editCategoryModal" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-custom-medium border-secondary">
-          <form id="editCategoryForm">
-            <div class="modal-header">
-              <h5 class="modal-title">Editar Categoría</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-              <input type="hidden" id="editCategoryId">
-              <div class="mb-3">
-                <label for="editCategoryName" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="editCategoryName" required>
-              </div>
-              <div class="mb-3">
-                <label for="editCategoryDescription" class="form-label">Descripción</label>
-                <textarea class="form-control" id="editCategoryDescription" rows="3"></textarea>
-              </div>
-              <div id="editCategoryError" class="alert alert-danger d-none"></div>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" id="deleteCategoryButton" class="btn btn-danger">Eliminar</button>
-              <div>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
+      <div class="modal-dialog modal-dialog-centered"><div class="modal-content bg-custom-medium border-secondary"><form id="editCategoryForm"><div class="modal-header"><h5 class="modal-title">Editar Categoría</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input type="hidden" id="editCategoryId"><div class="mb-3"><label for="editCategoryName" class="form-label">Nombre</label><input type="text" class="form-control" id="editCategoryName" required></div><div class="mb-3"><label for="editCategoryDescription" class="form-label">Descripción</label><textarea class="form-control" id="editCategoryDescription" rows="3"></textarea></div><div id="editCategoryError" class="alert alert-danger d-none"></div></div><div class="modal-footer justify-content-between"><button type="button" id="deleteCategoryButton" class="btn btn-danger">Eliminar</button><div><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button><button type="submit" class="btn btn-primary">Guardar Cambios</button></div></div></form></div></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
