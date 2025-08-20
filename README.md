@@ -76,9 +76,9 @@ Para ejecutar en segundo plano, utiliza la bandera `-d`.
 ## 🌐 Acceso a la Aplicación
 
   * **🖥️ Frontend (Aplicación Web)**:
-      * [**http://localhost:3000**](https://www.google.com/search?q=http://localhost:3000)
+      * [**http://localhost:3000**](http://localhost:3000/)
   * **⚙️ Backend (API)**:
-      * [**http://localhost:8080**](https://www.google.com/search?q=http://localhost:8080)
+      * [**http://localhost:8080**](http://localhost:8080)
   * **🗃️ Base de Datos (PostgreSQL)**:
       * **Host**: `localhost`
       * **Puerto**: `5433`
