@@ -1,0 +1,806 @@
+{
+	"info": {
+		"_postman_id": "8706addd-ea7b-4a98-ab4e-e72ef92c70fb",
+		"name": "MyTasks API - Backend (Usuarios)",
+		"description": "**Descripción**  \nColección Postman para probar el backend (Usuarios) del proyecto MyTasks.  \nIncluye los endpoints de autenticación y salud, con ejemplos de cargas útiles,  \ntests automáticos y documentación de posibles errores.\n\n**Base URL y Puerto**\n\n- Por defecto: `http://localhost:8080`\n    \n- Se almacena en el environment como `{{baseUrl}}`\n    \n\n---\n\n**Endpoints cubiertos (Usuarios)**\n\n1) POST {{baseUrl}}/usuarios\n\n- Crea un usuario (registro).\n    \n- Respuestas esperadas:  \n    • 201 Created: devuelve { id, username, picture_url? }  \n    • 400 Bad Request: JSON inválido o datos inválidos  \n    • 409 Conflict: username ya existe  \n    • 500 Internal Server Error: error en BD u otro\n    \n\n2) POST {{baseUrl}}/usuarios/iniciar-sesion\n\n- Inicia sesión y devuelve un JWT.\n    \n- Respuestas esperadas:  \n    • 200 OK: { token }  \n    • 400 Bad Request: JSON inválido  \n    • 401 Unauthorized: credenciales inválidas  \n    • 500 Internal Server Error: error en BD u otro\n    \n\n3) GET {{baseUrl}}/healthz\n\n- Healthcheck simple para verificar el servicio.\n    \n\n**Auth para el futuro**\n\n- Esta colección ya está preparada con autenticación Bearer `{{token}}`  \n    a nivel de colección, para que sea reutilizable cuando protejan rutas.\n    \n\n---\n\n# Endpoints cubiertos (Categorías) — requieren `Authorization: Bearer`\n\n1. **POST** `http://localhost:8080/categorias`  \n      \n    Crea una categoría.  \n      \n    Respuestas esperadas:  \n      \n    • **201 Created**: devuelve `{ id, name, description? }`  \n      \n    • **400 Bad Request**: JSON inválido o campos demasiado cortos  \n      \n    • **401 Unauthorized**: falta/incorrecto el token  \n      \n    • **409 Conflict**: la categoría ya existe  \n      \n    • **500 Internal Server Error**: error en BD u otro\n    \n2. **GET** `http://localhost:8080/categorias`  \n      \n    Lista todas las categorías.  \n      \n    Respuestas esperadas:  \n      \n    • **200 OK**: devuelve `[{ id, name, description? }, ...]`  \n      \n    • **401 Unauthorized**: falta/incorrecto el token  \n      \n    • **500 Internal Server Error**: error en BD u otro\n    \n3. **DELETE** `http://localhost:8080/categorias/{id}`  \n      \n    Elimina una categoría por id.  \n      \n    Respuestas esperadas:  \n      \n    • **204 No Content**: eliminada  \n      \n    • **400 Bad Request**: id inválido  \n      \n    • **401 Unauthorized**: falta/incorrecto el token  \n      \n    • **404 Not Found**: no existe  \n      \n    • **500 Internal Server Error**: error en BD u otro\n    \n\n---\n\n# Endpoints cubiertos (Tareas) — requieren `Authorization: Bearer`\n\n> \n\nNotas:  \n  \n• `status` permitido: **\"Sin Empezar\"**, **\"Empezada\"**, **\"Finalizada\"** (por defecto: \"Sin Empezar\").  \n  \n• `tentative_due_date` formato **YYYY-MM-DD**.  \n  \n• `category_id` es opcional (tarea puede no tener categoría).\n\n \n  \n\n1. **POST** `http://localhost:8080/tareas`  \n      \n    Crea una tarea del usuario autenticado.  \n      \n    Cuerpo esperado (ejemplo mínimo):  \n    `{ \"description\": \"Comprar pan\" }`  \n      \n    Opcionales: `tentative_due_date`, `status`, `category_id`.  \n      \n    Respuestas esperadas:  \n      \n    • **201 Created**: devuelve `{ id, description, created_at, tentative_due_date?, status, category_id?, user_id }`  \n      \n    • **400 Bad Request**: JSON/fecha/estado inválidos  \n      \n    • **401 Unauthorized**: falta/incorrecto el token  \n      \n    • **500 Internal Server Error**: error en BD u otro\n    \n2. **PUT** `http://localhost:8080/tareas/{id}`  \n      \n    Actualiza una tarea **propiedad del usuario**.  \n      \n    Cuerpo esperado: `{ description, tentative_due_date?, status?, category_id? }`  \n      \n    Respuestas esperadas:  \n      \n    • **204 No Content**: actualizada  \n      \n    • **400 Bad Request**: id/JSON/fecha/estado inválidos  \n      \n    • **401 Unauthorized**: falta/incorrecto el token  \n      \n    • **404 Not Found**: no existe o no pertenece al usuario  \n      \n    • **500 Internal Server Error**: error en BD u otro\n    \n3. **DELETE** `http://localhost:8080/tareas/{id}`  \n      \n    Elimina una tarea **propiedad del usuario**.  \n      \n    Respuestas esperadas:  \n      \n    • **204 No Content**: eliminada  \n      \n    • **400 Bad Request**: id inválido  \n      \n    • **401 Unauthorized**: falta/incorrecto el token  \n      \n    • **404 Not Found**: no existe o no pertenece al usuario  \n      \n    • **500 Internal Server Error**: error en BD u otro\n    \n4. **GET** `http://localhost:8080/tareas/usuario`  \n      \n    Lista tareas del usuario autenticado.  \n      \n    Parámetros opcionales:  \n      \n    • `?categoria_id=`  \n      \n    • `&estado=Sin Empezar|Empezada|Finalizada`  \n      \n    Respuestas esperadas:  \n      \n    • **200 OK**: devuelve `[{ id, description, created_at, tentative_due_date?, status, category_id?, user_id }, ...]`  \n      \n    • **400 Bad Request**: filtros inválidos  \n      \n    • **401 Unauthorized**: falta/incorrecto el token  \n      \n    • **500 Internal Server Error**: error en BD u otro\n    \n5. **GET** `http://localhost:8080/tareas/{id}`  \n      \n    Obtiene una tarea **propiedad del usuario** por id.  \n      \n    Respuestas esperadas:  \n      \n    • **200 OK**: `{ id, description, created_at, tentative_due_date?, status, category_id?, user_id }`  \n      \n    • **400 Bad Request**: id inválido  \n      \n    • **401 Unauthorized**: falta/incorrecto el token  \n      \n    • **404 Not Found**: no existe o no pertenece al usuario  \n      \n    • **500 Internal Server Error**: error en BD u otro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20955514",
+		"_collection_link": "https://www.postman.com/orange-zodiac-989531/workspace/miso/collection/20955514-8706addd-ea7b-4a98-ab4e-e72ef92c70fb?action=share&source=collection_link&creator=20955514"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Registrar usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status 201 o 409 (usuario duplicado)', function () {",
+									"  pm.expect([201,409]).to.include(pm.response.code);",
+									"});",
+									"if (pm.response.code === 201) {",
+									"  const json = pm.response.json();",
+									"  pm.expect(json).to.have.property('id');",
+									"  pm.collectionVariables.set('user_id', json.id);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"david\",\n  \"password\": \"hugo\",\n  \"picture_url\": \"https://i.pravatar.cc/100\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						},
+						"description": "Crea un nuevo usuario.\n\n**Éxito**\n- 201 Created → { id, username, picture_url? }\n\n**Errores**\n- 400 Bad Request → JSON inválido o campos demasiado cortos\n- 409 Conflict → username ya existente\n- 500 Internal Server Error → error inesperado/BD\n"
+					},
+					"response": [
+						{
+							"name": "Registrar usuario",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"david\",\n  \"password\": \"hugo\",\n  \"picture_url\": \"https://i.pravatar.cc/100\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Aug 2025 19:47:09 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "69"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"username\": \"david\",\n    \"picture_url\": \"https://i.pravatar.cc/100\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Iniciar sesión",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status 200 OK', function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"const data = pm.response.json();",
+									"pm.test('Token presente', function () {",
+									"  pm.expect(data).to.have.property('token');",
+									"});",
+									"// Guardar token en environment para usarlo como Bearer",
+									"pm.environment.set('token', data.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"david\",\n  \"password\": \"hugo\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/iniciar-sesion",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								"iniciar-sesion"
+							]
+						},
+						"description": "Autentica al usuario y devuelve un token JWT.\n\n**Éxito**\n- 200 OK → { token }\n\n**Errores**\n- 400 Bad Request → JSON inválido\n- 401 Unauthorized → credenciales inválidas\n- 500 Internal Server Error → error inesperado/BD\n"
+					},
+					"response": [
+						{
+							"name": "Iniciar sesión",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"david\",\n  \"password\": \"hugo\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/iniciar-sesion",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"iniciar-sesion"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Aug 2025 19:48:09 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "151"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"{{vault:json-web-token}}\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Login - credenciales incorrectas (espera 401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status 401 Unauthorized', function () {",
+									"  pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"david\",\n  \"password\": \"contrasena_incorrecta\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/iniciar-sesion",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								"iniciar-sesion"
+							]
+						},
+						"description": "Prueba negativa: debe devolver 401 Unauthorized si la contraseña es inválida."
+					},
+					"response": [
+						{
+							"name": "Login - credenciales incorrectas (espera 401)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"david\",\n  \"password\": \"contrasena_incorrecta\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/iniciar-sesion",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"iniciar-sesion"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Aug 2025 19:48:21 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "35"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"credenciales inválidas\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Carpeta con endpoints de autenticación de usuarios."
+		},
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "Healthcheck",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status 200 OK', function () {",
+									"  pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/healthz",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"healthz"
+							]
+						},
+						"description": "Devuelve `{ ok: true }` si el backend está vivo."
+					},
+					"response": [
+						{
+							"name": "Healthcheck",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/healthz",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"healthz"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Aug 2025 19:48:28 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "11"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Categorías (protegido)",
+			"item": [
+				{
+					"name": "Crear categoría",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('201 Created', function () { pm.response.to.have.status(201); });",
+									"const json = pm.response.json();",
+									"pm.collectionVariables.set('categoria_id', json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Estudio\",\n  \"description\": \"Tareas de la U\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/categorias",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categorias"
+							]
+						},
+						"description": "Crea una categoría. 201 Created esperado."
+					},
+					"response": []
+				},
+				{
+					"name": "Listar categorías",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+									"pm.test('Es un arreglo', function () { pm.expect(pm.response.json()).to.be.an('array'); });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categorias",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categorias"
+							]
+						},
+						"description": "Devuelve array de categorías."
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar categoría por id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('204 No Content o 404 Not Found', function () {",
+									"  pm.expect([204,404]).to.include(pm.response.code);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categorias/{{categoria_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categorias",
+								"{{categoria_id}}"
+							]
+						},
+						"description": "Devuelve 204 No Content si borró. 404 si no existe."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tareas (protegido)",
+			"item": [
+				{
+					"name": "Crear tarea (con categoría)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('201 Created', function(){ pm.response.to.have.status(201); });",
+									"var j = pm.response.json(); pm.environment.set('task_id', j.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Comprar pan\",\n  \"tentative_due_date\": \"2025-08-31\",\n  \"status\": \"Sin Empezar\",\n  \"category_id\": 3\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tareas?category_id=4",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tareas"
+							],
+							"query": [
+								{
+									"key": "category_id",
+									"value": "4"
+								}
+							]
+						},
+						"description": "Crea tarea asociada a la categoría guardada en environment."
+					},
+					"response": []
+				},
+				{
+					"name": "Crear tarea (sin categoría)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('201 Created', function(){ pm.response.to.have.status(201); });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Leer libro\",\n  \"tentative_due_date\": \"2025-09-05\",\n  \"status\": \"Finalizada\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tareas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tareas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar tareas del usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.response.to.have.status(200);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tareas/usuario",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tareas",
+								"usuario"
+							]
+						},
+						"description": "Filtros opcionales: ?categoria_id={{categoria_id}}&estado=Empezada"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener tarea por id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.response.to.have.status(200);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tareas/{{task_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tareas",
+								"{{task_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar tarea",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('204 No Content', function(){ pm.response.to.have.status(204); });"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Comprar pan y leche\",\n  \"tentative_due_date\": \"2025-09-01\",\n  \"status\": \"Empezada\",\n  \"category_id\": {{categoria_id}}\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tareas/{{task_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tareas",
+								"{{task_id}}"
+							]
+						},
+						"description": "Actualiza campos completos de la tarea."
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar tarea",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('204 No Content o 404 Not Found', function(){ pm.expect([204,404]).to.include(pm.response.code); });"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tareas/{{task_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tareas",
+								"{{task_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "user_id",
+			"value": ""
+		},
+		{
+			"key": "categoria_id",
+			"value": ""
+		},
+		{
+			"key": "task_id",
+			"value": ""
+		}
+	]
+}
