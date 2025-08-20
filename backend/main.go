@@ -1,82 +1,75 @@
 package main
 
 import (
-	"fmt"
-	"database/sql"
 	"log"
-	"os"
 	"net/http"
-	_ "github.com/lib/pq"
-	"github.com/gin-gonic/gin"
+	"time"
+
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+	"mytasks/internal/db"
+	"mytasks/internal/handlers"
+	"mytasks/internal/middleware"
 )
 
-var db *sql.DB
-
 func main() {
-	// Read DB config from env
-	var err error
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
-	dbUser := os.Getenv("DB_USER")
-	dbPass := os.Getenv("DB_PASSWORD")
-	dbName := os.Getenv("DB_NAME")
-
-	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbPort, dbUser, dbPass, dbName)
-
-	db, err = sql.Open("postgres", connStr)
+	// Abrir DB
+	database, err := db.Open()
 	if err != nil {
-		log.Fatal("❌ Could not open DB connection:  ", err)
+		log.Fatalf("DB error: %v", err)
 	}
+	defer database.Close()
 
-	err = db.Ping()
-	if err != nil {
-		log.Fatal("❌ Could not ping DB: ", err)
+	// Pingar para validar
+	if err := database.Ping(); err != nil {
+		log.Fatalf("DB ping error: %v", err)
 	}
-
-	fmt.Println("Successfully connected to the database!")
 
 	r := gin.Default()
 
+
+
+	// CORS abierto para desarrollo
 	r.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"*"}, // Allow all origins
-		AllowMethods: []string{"GET", "POST", "PUT", "DELETE"},
-		AllowHeaders: []string{"Origin", "Content-Type", "Authorization"},
+		AllowOrigins:  []string{"*"},
+		AllowMethods:  []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:  []string{"Authorization", "Content-Type"},
+		ExposeHeaders: []string{"Content-Length"},
+		MaxAge:        12 * time.Hour,
 	}))
 
-	r.GET("/api/hello", func(c *gin.Context) {
-		c.JSON(200, gin.H{"message": "Hello from Go Backend!"})
-	})
+	uh := &handlers.UsersHandler{DB: database}
 
-	r.GET("/api/messages", getMessages)
+	// Endpoints Rol A
+	r.POST("/usuarios", uh.Register)             // Crear usuario
+	r.POST("/usuarios/iniciar-sesion", uh.Login) // Login -> token
 
-	r.Run(":8080") // Listen on port 8080
-}
+	
+	// Healthcheck opcional
+	r.GET("/healthz", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"ok": true}) })
 
-func getMessages(c *gin.Context) {
-	if db == nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "DB connection is nil"})
-        return
-    }
+	// Dentro de main(), cuando ya tengas `database := db.Open()` y `r := gin.Default()`:
+	catHandler := &handlers.CategoriesHandler{DB: database}
 
-    rows, err := db.Query("SELECT id, message FROM test_table")
-    if err != nil {
-        log.Printf("❌ Error querying DB: %v", err)
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to query DB"})
-        return
-    }
-    defer rows.Close()
+	auth := r.Group("/")
+	auth.Use(middleware.AuthRequired()) // requiere Bearer {{token}}
 
-    var messages []map[string]interface{}
+	// Categorías (protegido)
+	auth.POST("/categorias", catHandler.Create)
+	auth.GET("/categorias", catHandler.List)
+	auth.DELETE("/categorias/:id", catHandler.Delete)
 
-    for rows.Next() {
-        var id int
-        var message string
-        if err := rows.Scan(&id, &message); err != nil {
-            continue
-        }
-        messages = append(messages, gin.H{"id": id, "message": message})
-    }
+	// Dentro de main(), después de abrir la DB y crear el router:
+	th := &handlers.TasksHandler{DB: database}
 
-    c.JSON(http.StatusOK, messages)
+	// Tareas
+	auth.POST("/tareas", th.Create)
+	auth.PUT("/tareas/:id", th.Update)
+	auth.DELETE("/tareas/:id", th.Delete)
+	auth.GET("/tareas/usuario", th.ListByUser) // ?categoria_id=&estado=
+	auth.GET("/tareas/:id", th.GetByID)
+
+	if err := r.Run(":8080"); err != nil {
+		log.Fatal(err)
+	}
 }
