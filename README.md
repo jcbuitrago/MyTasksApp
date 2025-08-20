@@ -99,6 +99,12 @@ Para ejecutar en segundo plano, utiliza la bandera `-d`.
 docker-compose down
 ```
 
+## Coleccion de postman
+
+https://www.postman.com/orange-zodiac-989531/workspace/miso/collection/20955514-8706addd-ea7b-4a98-ab4e-e72ef92c70fb?action=share&source=copy-link&creator=20955514
+
+
+
 ## 📄 Endpoints de la API REST
 
 La documentación completa de la API se encuentra en la colección de Postman del proyecto. A continuación, se resumen los endpoints principales:
