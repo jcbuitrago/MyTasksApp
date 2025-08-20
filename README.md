@@ -1,5 +1,14 @@
 # Proyecto de Nivelación - Gestor de Tareas (MISO)
 
+## Integrantes
+
+|Nombre|Correo|Codigo|
+|------|------|------|
+|Francisco Santamaría|F.santamaria@uniandes.edu.co|202022134|
+|David Octavio Ibarra Muñoz| d.ibarra@uniandes.edu.co| 202014446|
+|Luis Fernando Ruiz| lf.ruizo1@uniandes.edu.co| 202211513|
+|Juan Camilo Buitrago|Correo | Codigo
+
 Este repositorio contiene el desarrollo del **Proyecto No. 0 - Ejercicio de Nivelación** para el curso **"Desarrollo de Software en la Nube"** de la Maestría en Ingeniería de Software (MISO) de la Universidad de los Andes.
 
 El objetivo es construir una aplicación web completa para la gestión de tareas, implementando una API REST en Go, una base de datos PostgreSQL y una interfaz de usuario web, todo orquestado a través de contenedores Docker.
