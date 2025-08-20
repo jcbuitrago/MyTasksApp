@@ -7,7 +7,7 @@
 |Francisco Santamaría|F.santamaria@uniandes.edu.co|202022134|
 |David Octavio Ibarra Muñoz| d.ibarra@uniandes.edu.co| 202014446|
 |Luis Fernando Ruiz| lf.ruizo1@uniandes.edu.co| 202211513|
-|Juan Camilo Buitrago|Correo | Codigo
+|Juan Camilo Buitrago|Jc.buitragoa1@uniandes.edu.co | 201729194|
 
 Este repositorio contiene el desarrollo del **Proyecto No. 0 - Ejercicio de Nivelación** para el curso **"Desarrollo de Software en la Nube"** de la Maestría en Ingeniería de Software (MISO) de la Universidad de los Andes.
 
