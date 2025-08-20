@@ -1,18 +1,19 @@
 services:
   db:
-    image: postgres:15
+    image: postgres:15.5
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - "5433:5432"
+    # Para hacer debug the la db
+    # ports:
+    #   - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - app-network
+      - app-backend
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
@@ -25,7 +26,6 @@ services:
     container_name: backend
     environment:
       DB_HOST: db
-      DB_PORT: 5432
       DB_USER: ${POSTGRES_USER}
       DB_PASSWORD: ${POSTGRES_PASSWORD}
       DB_NAME: ${POSTGRES_DB}
@@ -36,7 +36,8 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - app-network
+      - app-backend
+      - app-frontend
     restart: unless-stopped
 
 
@@ -48,12 +49,13 @@ services:
     ports:
       - "3000:80"
     networks:
-      - app-network
+      - app-frontend
     depends_on:
       - backend
 
 networks:
-  app-network:
+  app-backend:
+  app-frontend:
 
 volumes:
   pgdata:
