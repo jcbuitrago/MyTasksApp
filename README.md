@@ -13,6 +13,10 @@ Este repositorio contiene el desarrollo del **Proyecto No. 0 - Ejercicio de Nive
 
 El objetivo es construir una aplicación web completa para la gestión de tareas, implementando una API REST en Go, una base de datos PostgreSQL y una interfaz de usuario web, todo orquestado a través de contenedores Docker.
 
+## Video de sustentacion proyecto
+
+https://uniandes-my.sharepoint.com/:v:/g/personal/lf_ruizo1_uniandes_edu_co/EaKWcf-t_j5Pn2c8cRYnWNEBp9eF-MAie-99OTfUytqapQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=R2yZsd
+
 ## 🚀 Stack Tecnológico
 
   * **Backend**: Go (Golang)
@@ -102,6 +106,7 @@ docker-compose down
 ## Coleccion de postman
 
 https://www.postman.com/orange-zodiac-989531/workspace/miso/collection/20955514-8706addd-ea7b-4a98-ab4e-e72ef92c70fb?action=share&source=copy-link&creator=20955514
+
 
 
 
